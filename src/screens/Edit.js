@@ -22,36 +22,41 @@ const changeImg = async (setImg) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [2, 3],
-      quality: 0.7,
+      quality: 1,
     });
-    setImg(data.uri)
-    console.log(data);
+    if (!data.cancelled){
+      setImg(data.uri)
+      console.log(data);
+    }
   } else {
     Alert.alert("Permission is required to access Gallery");
   }
 };
 
-const saveImg = async (uri, setUri, viewShotRef) => {
+const saveImg = async (uri, setUri, viewShotRef, navigation) => {
   const img = await viewShotRef.current.capture();
 
-            setUri(img);      
-            console.log(uri);
-
-            const granted = MediaLibrary.getPermissionsAsync()
+            await setUri(img);      
+            const granted = await MediaLibrary.getPermissionsAsync()
             if (granted) {
-              
-              MediaLibrary.saveToLibraryAsync(uri);
-              console.log('Saved!')
-              alert('saved to Gallery!')
+                  await MediaLibrary.saveToLibraryAsync(img);
+                  console.log('Saved!')
+                  alert('saved to Gallery!')
+                  navigation.navigate('Home')
+
             } else {
               Alert.alert("Permission is required");
             }
 }
 
-const Edit = () => {
+const Edit = ({navigation, route}) => {
+  // setImg(route.params.data.uri)
+  const imgRoute = route.params.data.uri
+  console.log(route.params.data.uri)
   const viewShotRef = useRef(null);
   const [uri, setUri] = useState("");
-  const [img, setImg] = useState('https://images.unsplash.com/photo-1546743991-422abed7a695?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60')
+  const [img, setImg] = useState(imgRoute)
+  // setImg(imgRoute)
   return (
     <View style={{ flex: 1 }}>
         <ViewShot ref={viewShotRef}  options={{ format: "jpg", quality: 0.9 }} style={{ flex: 7 }} >
@@ -120,7 +125,7 @@ const Edit = () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.btn, { flex: 1, flexDirection: "row" }]}
-          onPress={() => saveImg(uri, setUri, viewShotRef)}
+          onPress={() => saveImg(uri, setUri, viewShotRef, navigation)}
         >
           <Entypo name='save' size={22} style={{ marginRight: 5 }} />
           <Text>Save Image</Text>

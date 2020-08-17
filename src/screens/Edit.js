@@ -10,10 +10,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import * as MediaLibrary from 'expo-media-library';
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import ViewShot from "react-native-view-shot";
+import * as ImageManipulator from "expo-image-manipulator";
 import * as Permissions from "expo-permissions";
+import * as Sharing from 'expo-sharing'
 
 const changeImg = async (setImg) => {
   const { granted } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -48,11 +50,24 @@ const saveImg = async (uri, setUri, viewShotRef, navigation) => {
               Alert.alert("Permission is required");
             }
 }
+const openShareDialogAsync = async (viewShotRef) => {
+  const img = await viewShotRef.current.capture();
+  if (!(await Sharing.isAvailableAsync())) {
+    alert(`Uh oh, sharing isn't available on your platform`);
+    return;
+  }
+  try {
+    const manipResult = await ImageManipulator.manipulateAsync(img);
+    await Sharing.shareAsync(manipResult.uri);
+  } catch (err) {
+    alert(err)
+    console.log("ERROR: ", err)
+  }
+}; 
 
 const Edit = ({navigation, route}) => {
   // setImg(route.params.data.uri)
   const imgRoute = route.params.data.uri
-  console.log(route.params.data.uri)
   const viewShotRef = useRef(null);
   const [uri, setUri] = useState("");
   const [img, setImg] = useState(imgRoute)
@@ -119,16 +134,34 @@ const Edit = ({navigation, route}) => {
             </ImageBackground>
             
         </ViewShot>
-      <View style={{ flex: 1, flexDirection: "row" }}>
+      <View style={{ flex: 1, flexDirection: "row", justifyContent: 'space-around' }}>
         <TouchableOpacity style={styles.btn} onPress={ () => changeImg(setImg)} >
           <Text>Change Image</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.btn, { flex: 1, flexDirection: "row" }]}
+          style={styles.btn}
           onPress={() => saveImg(uri, setUri, viewShotRef, navigation)}
         >
           <Entypo name='save' size={22} style={{ marginRight: 5 }} />
           <Text>Save Image</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ flex: 1, backgroundColor: "#39f70a",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 13,
+          margin: 4,
+          width: 8,
+          height: 50,
+          padding: 0
+            }}
+            onPress={() => { 
+              console.log('Pressed')
+              openShareDialogAsync(viewShotRef)} }
+        >
+         <Ionicons name="md-share-alt" size={25} color="white" 
+         />
+          {/* <Text>Save Image</Text> */}
         </TouchableOpacity>
       </View>
     </View>
@@ -136,14 +169,14 @@ const Edit = ({navigation, route}) => {
 };
 const styles = StyleSheet.create({
   btn: {
-    width: 150,
+    width: 130,
     height: 50,
     backgroundColor: "#39f70a",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 13,
-    margin: 12,
-    padding: 10,
+    margin: 4,
+    // padding: 8,
   },
 });
 

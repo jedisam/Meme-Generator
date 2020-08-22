@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from "./src/screens/Home";
 import Edit from "./src/screens/Edit";
+import RandomImage from "./src/screens/RandomImage";
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,7 @@ const App = () => {
       <Stack.Navigator headerMode="none">
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Edit" component={Edit} />
+      <Stack.Screen name="Random" component={RandomImage} />
     </Stack.Navigator>
   </NavigationContainer>
 

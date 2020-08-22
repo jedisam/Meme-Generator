@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import {
   View,
   Text,
+  Image,
   StyleSheet,
   ImageBackground,
   TextInput,
@@ -64,14 +65,52 @@ const openShareDialogAsync = async (viewShotRef) => {
   }
 }; 
 
-const Edit = ({navigation, route}) => {
-  const imgRoute = route.params.data.uri
+useEffect(() => {
+    const imgs = 'https://i.imgflip.com/345v97.jpg'
+    Image.getSize( imgs, ( Width, Height ) =>
+        {
+            console.log(Width, Height)
+            // this.setState({ ImageWidth: Width, ImageHeight: Height });
+        },(errorMsg) =>
+        {
+            console.log( errorMsg );
+        });
+  }, []);
+
+
+const RandomImage = ({navigation}) => {
+
+
+    // componentWillMount(){
+    //     const img = 'https://i.imgflip.com/345v97.jpg'
+    //     Image.getSize( img, ( Width, Height ) =>
+    //         {
+    //             console.log(Width, Height)
+    //             // this.setState({ ImageWidth: Width, ImageHeight: Height });
+    //         },(errorMsg) =>
+    //         {
+    //             console.log( errorMsg );
+    //         });
+    
+      }
+
+    
+
+
+//   const imgRoute = route.params.data.uri
   const viewShotRef = useRef(null);
-  const [uri, setUri] = useState("");
-  const [img, setImg] = useState(imgRoute)
+  const [uri, setUri] = useState("https://i.imgflip.com/345v97.jpg");
+  const [img, setImg] = useState('https://i.imgflip.com/345v97.jpg')
   return (
     <View style={{ flex: 1 }}>
-        <ViewShot ref={viewShotRef}  options={{ format: "jpg", quality: 0.9 }} style={{ flex: 7 }} >
+        <ViewShot ref={viewShotRef}  options={{ format: "jpg", quality: 0.9 }} style={{ flex: 7}} >
+        {/* Image.getSize( img, ( Width, Height ) =>
+        {
+            this.setState({ ImageWidth: Width, ImageHeight: Height });
+        },(errorMsg) =>
+        {
+            console.log( errorMsg );
+        }); */}
             <ImageBackground
               source={{
                 uri:
@@ -79,11 +118,11 @@ const Edit = ({navigation, route}) => {
               }}
               style={{
                 flex: 1,
-                  resizeMode: "cover",
-                justifyContent: "center",
                 width: null,
-                height: null,
-                resizeMode: "contain",
+                height: 400,
+                aspectRatio: 0.9, 
+                resizeMode: 'contain',
+                // aspectRatio: 1.1
               }}
             >
               <View style={{ flex: 1, alignItems: "center" }}>
@@ -176,4 +215,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Edit;
+export default RandomImage;

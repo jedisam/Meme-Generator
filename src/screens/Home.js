@@ -55,7 +55,7 @@ const Home = ({ navigation }) => {
           >
             <Text style={{ color: "#fff" }}>Upload Image</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress={() =>navigation.navigate('Random')} >
             <Text style={{ color: "#fff" }}>Use Random Image</Text>
           </TouchableOpacity>
         </View>

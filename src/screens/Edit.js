@@ -133,14 +133,14 @@ const Edit = ({navigation, route}) => {
         </ViewShot>
       <View style={{ flex: 1, flexDirection: "row", justifyContent: 'space-around' }}>
         <TouchableOpacity style={styles.btn} onPress={ () => changeImg(setImg)} >
-          <Text>Change Image</Text>
+          <Text style={{color:'#fff'}}>Change Image</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.btn}
           onPress={() => saveImg(uri, setUri, viewShotRef, navigation)}
         >
-          <Entypo name='save' size={22} style={{ marginRight: 5 }} />
-          <Text>Save Image</Text>
+          <Entypo name='save' size={22} style={{ marginRight: 5 }} color="#fff"  />
+          <Text style={{color: '#fff'}}>Save Image</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flex: 1, backgroundColor: "#39f70a",
@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 13,
     margin: 4,
+    flexDirection: 'row'
     // padding: 8,
   },
 });

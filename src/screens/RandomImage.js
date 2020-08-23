@@ -11,9 +11,8 @@ import {
 import * as MediaLibrary from 'expo-media-library';
 import { Entypo, Ionicons, FontAwesome } from "@expo/vector-icons";
 import ViewShot from "react-native-view-shot";
-import * as Permissions from "expo-permissions";
+import * as ImageManipulator from "expo-image-manipulator";
 import * as Sharing from 'expo-sharing'
-
 
 
 const saveImg = async (uri, setUri, viewShotRef, navigation) => {
@@ -46,47 +45,18 @@ const openShareDialogAsync = async (viewShotRef) => {
   }
 }; 
 
-
-
 const RandomImage = ({navigation}) => {
 
-
-   
-
-
-//   const imgRoute = route.params.data.uri
   const viewShotRef = useRef(null); 
-  // const [uri, setUri] = useState("https://i.imgflip.com/345v97.jpg");
   const [img, setImg] = useState('https://i.imgflip.com/345v97.jpg')
   const [allMemes, setAllMemes] = useState([])
 
 
   const changeImg = async (setImg) => {
-    // const { granted } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    // if (granted) {
-    //   let data = await ImagePicker.launchImageLibraryAsync({
-    //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //     allowsEditing: true,
-    //     aspect: [2, 3],
-    //     quality: 1,
-    //   });
-    //   if (!data.cancelled){
-    //     setImg(data.uri)
-    //     console.log(data);
-    //   }
-    // } else {
-    //   Alert.alert("Permission is required to access Gallery");
-    // }
-  
-      const randNum = Math.floor(Math.random() * allMemes.length)
+         const randNum = Math.floor(Math.random() * allMemes.length)
       console.log(allMemes.length)
       setImg(allMemes[randNum].url)
-
-
   };
-
-
-
 
   const { width, height } = Dimensions.get('window');
 
@@ -124,12 +94,11 @@ const RandomImage = ({navigation}) => {
                   placeholderTextColor='#000'
                   textAlign='center'
                   multiline={true}
-                  maxLength={27}
+                  maxLength={25}
                   autoCapitalize = 'characters'
                   onKeyPress = {() => {}}
                   returnKeyType = 'done'
                   style={{
-                    //   borderWidth: 10,
                     padding: 18,
                     position: "absolute",
                     top: 10,
@@ -142,16 +111,14 @@ const RandomImage = ({navigation}) => {
                 <TextInput
                   placeholder='Enter Bottom Text'
                   placeholderTextColor='#000'
-                  // color="#fff"
                   textAlign='center'
                   multiline={true}
-                  maxLength={27}
+                  maxLength={25}
                   autoCaptialize = 'characters'
                   style={{
-                    //   borderWidth: 10,
                     padding: 18,
                     position: "absolute",
-                    bottom: -33,
+                    bottom: -27,
                     width: Dimensions.get("screen").width - 30,
                     alignItems: "center",
                     fontSize: 40,
@@ -195,7 +162,7 @@ const RandomImage = ({navigation}) => {
             }}
             onPress={() => { 
               console.log('Pressed')
-              openShareDialogAsync()
+              openShareDialogAsync(viewShotRef)
               } }
         >
          <Ionicons name="md-share-alt" size={25} color="white" 
@@ -214,6 +181,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 13,
     margin: 4,
+    flexDirection: 'row'
     // padding: 8,
   },
 });

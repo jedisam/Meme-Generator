@@ -67,32 +67,7 @@ const openShareDialogAsync = async (viewShotRef) => {
 const RandomImage = ({navigation}) => {
 
 
-    // componentWillMount(){
-    //     const img = 'https://i.imgflip.com/345v97.jpg'
-    //     Image.getSize( img, ( Width, Height ) =>
-    //         {
-    //             console.log(Width, Height)
-    //             // this.setState({ ImageWidth: Width, ImageHeight: Height });
-    //         },(errorMsg) =>
-    //         {
-    //             console.log( errorMsg );
-    //         });
-    
-      // }
-
-      // useEffect(() => {
-      //   const imgs = 'https://i.imgflip.com/345v97.jpg'
-      //   Image.getSize( imgs, ( Width, Height ) =>
-      //       {
-      //           console.log(Width, Height)
-      //           // this.setState({ ImageWidth: Width, ImageHeight: Height });
-      //       },(errorMsg) =>
-      //       {
-      //           console.log( errorMsg );
-      //       });
-      // }, []);
-    
-    
+   
 
 
 //   const imgRoute = route.params.data.uri
@@ -103,24 +78,7 @@ const RandomImage = ({navigation}) => {
 
   const { width, height } = Dimensions.get('window');
 
-    const resizeImg = async () => {
-    // alert('hey')
-      // alert(img)
-      console.log(width, height)
-        const manipResult = await ImageManipulator.manipulateAsync(
-          img,
-          [{resize: { height: 438 }}],
-          { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
-        );
-        setImg(manipResult.uri)
-        // console.log((manipResult))
-    }
-    
-
   
-
-
-
   return (
     <View style={{ flex: 1 }}>
         <ViewShot ref={viewShotRef}  options={{ format: "jpg", quality: 0.9 }} style={{ flex: 7}} >
@@ -131,11 +89,12 @@ const RandomImage = ({navigation}) => {
                   uri,
               }}
               resizeMode="contain"
-              // transform= {0.4}
               style={{
                 flex: 1,
                 width: width,
-                height: 500,
+                // height: 500,
+                justifyContent: 'center',
+                alignItems: 'center'
               }}
             >
               <View style={{ flex: 1, alignItems: "center" }}>

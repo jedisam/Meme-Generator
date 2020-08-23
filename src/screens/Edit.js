@@ -69,6 +69,7 @@ const Edit = ({navigation, route}) => {
   const viewShotRef = useRef(null);
   const [uri, setUri] = useState("");
   const [img, setImg] = useState(imgRoute)
+  const { width, height } = Dimensions.get('window');
   return (
     <View style={{ flex: 1 }}>
         <ViewShot ref={viewShotRef}  options={{ format: "jpg", quality: 0.9 }} style={{ flex: 7 }} >
@@ -77,13 +78,12 @@ const Edit = ({navigation, route}) => {
                 uri:
                   img,
               }}
+              resizeMode="contain"
               style={{
                 flex: 1,
-                  resizeMode: "cover",
                 justifyContent: "center",
-                width: null,
+                width,
                 height: null,
-                resizeMode: "contain",
               }}
             >
               <View style={{ flex: 1, alignItems: "center" }}>

@@ -9,28 +9,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import * as MediaLibrary from 'expo-media-library';
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import { Entypo, Ionicons, FontAwesome } from "@expo/vector-icons";
 import ViewShot from "react-native-view-shot";
 import * as Permissions from "expo-permissions";
 import * as Sharing from 'expo-sharing'
 
-const changeImg = async (setImg) => {
-  const { granted } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-  if (granted) {
-    let data = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [2, 3],
-      quality: 1,
-    });
-    if (!data.cancelled){
-      setImg(data.uri)
-      console.log(data);
-    }
-  } else {
-    Alert.alert("Permission is required to access Gallery");
-  }
-};
+
 
 const saveImg = async (uri, setUri, viewShotRef, navigation) => {
   const img = await viewShotRef.current.capture();
@@ -71,12 +55,49 @@ const RandomImage = ({navigation}) => {
 
 
 //   const imgRoute = route.params.data.uri
-  const viewShotRef = useRef(null);
-  const [uri, setUri] = useState("https://i.imgflip.com/345v97.jpg");
+  const viewShotRef = useRef(null); 
+  // const [uri, setUri] = useState("https://i.imgflip.com/345v97.jpg");
   const [img, setImg] = useState('https://i.imgflip.com/345v97.jpg')
+  const [allMemes, setAllMemes] = useState([])
+
+
+  const changeImg = async (setImg) => {
+    // const { granted } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    // if (granted) {
+    //   let data = await ImagePicker.launchImageLibraryAsync({
+    //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //     allowsEditing: true,
+    //     aspect: [2, 3],
+    //     quality: 1,
+    //   });
+    //   if (!data.cancelled){
+    //     setImg(data.uri)
+    //     console.log(data);
+    //   }
+    // } else {
+    //   Alert.alert("Permission is required to access Gallery");
+    // }
+  
+      const randNum = Math.floor(Math.random() * allMemes.length)
+      console.log(allMemes.length)
+      setImg(allMemes[randNum].url)
+
+
+  };
+
+
 
 
   const { width, height } = Dimensions.get('window');
+
+  useEffect(() => {
+    fetch('https://api.imgflip.com/get_memes')
+      .then(res => res.json())
+      .then(res => {
+        const { memes } = res.data 
+        setAllMemes(memes)
+      })
+  });
 
   
   return (
@@ -86,13 +107,13 @@ const RandomImage = ({navigation}) => {
             <ImageBackground
               source={{
                 uri:
-                  uri,
+                  img,
               }}
               resizeMode="contain"
               style={{
                 flex: 1,
                 width: width,
-                // height: 500,
+                height: null,
                 justifyContent: 'center',
                 alignItems: 'center'
               }}
@@ -130,7 +151,7 @@ const RandomImage = ({navigation}) => {
                     //   borderWidth: 10,
                     padding: 18,
                     position: "absolute",
-                    bottom: 7,
+                    bottom: -33,
                     width: Dimensions.get("screen").width - 30,
                     alignItems: "center",
                     fontSize: 40,
@@ -143,15 +164,24 @@ const RandomImage = ({navigation}) => {
             
         </ViewShot>
       <View style={{ flex: 1, flexDirection: "row", justifyContent: 'space-around' }}>
-        <TouchableOpacity style={styles.btn} onPress={ () => changeImg(setImg)} >
-          <Text>Change Image</Text>
+        <TouchableOpacity style={{ flex: 1, backgroundColor: "#39f70a",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 13,
+          margin: 4,
+          width: 5,
+          height: 50,
+          padding: 0
+            }}onPress={ () => changeImg(setImg)} >
+        <FontAwesome name="rotate-right" size={24} color="#fff" />
+          {/* <Text>Change Image</Text> */}
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.btn}
           onPress={() => saveImg(uri, setUri, viewShotRef, navigation)}
         >
-          <Entypo name='save' size={22} style={{ marginRight: 5 }} />
-          <Text>Save Image</Text>
+          <Entypo name='save' size={22} color="#fff" style={{ marginRight: 5 }} />
+          <Text style={{color:"#fff"}}>Save Image</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flex: 1, backgroundColor: "#39f70a",

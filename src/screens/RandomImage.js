@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   ImageBackground,
   TextInput,
@@ -11,9 +10,7 @@ import {
 } from "react-native";
 import * as MediaLibrary from 'expo-media-library';
 import { Entypo, Ionicons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
 import ViewShot from "react-native-view-shot";
-import * as ImageManipulator from "expo-image-manipulator";
 import * as Permissions from "expo-permissions";
 import * as Sharing from 'expo-sharing'
 
@@ -65,17 +62,6 @@ const openShareDialogAsync = async (viewShotRef) => {
   }
 }; 
 
-useEffect(() => {
-    const imgs = 'https://i.imgflip.com/345v97.jpg'
-    Image.getSize( imgs, ( Width, Height ) =>
-        {
-            console.log(Width, Height)
-            // this.setState({ ImageWidth: Width, ImageHeight: Height });
-        },(errorMsg) =>
-        {
-            console.log( errorMsg );
-        });
-  }, []);
 
 
 const RandomImage = ({navigation}) => {
@@ -92,8 +78,20 @@ const RandomImage = ({navigation}) => {
     //             console.log( errorMsg );
     //         });
     
-      }
+      // }
 
+      // useEffect(() => {
+      //   const imgs = 'https://i.imgflip.com/345v97.jpg'
+      //   Image.getSize( imgs, ( Width, Height ) =>
+      //       {
+      //           console.log(Width, Height)
+      //           // this.setState({ ImageWidth: Width, ImageHeight: Height });
+      //       },(errorMsg) =>
+      //       {
+      //           console.log( errorMsg );
+      //       });
+      // }, []);
+    
     
 
 
@@ -101,28 +99,43 @@ const RandomImage = ({navigation}) => {
   const viewShotRef = useRef(null);
   const [uri, setUri] = useState("https://i.imgflip.com/345v97.jpg");
   const [img, setImg] = useState('https://i.imgflip.com/345v97.jpg')
+
+
+  const { width, height } = Dimensions.get('window');
+
+    const resizeImg = async () => {
+    // alert('hey')
+      // alert(img)
+      console.log(width, height)
+        const manipResult = await ImageManipulator.manipulateAsync(
+          img,
+          [{resize: { height: 438 }}],
+          { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
+        );
+        setImg(manipResult.uri)
+        // console.log((manipResult))
+    }
+    
+
+  
+
+
+
   return (
     <View style={{ flex: 1 }}>
         <ViewShot ref={viewShotRef}  options={{ format: "jpg", quality: 0.9 }} style={{ flex: 7}} >
-        {/* Image.getSize( img, ( Width, Height ) =>
-        {
-            this.setState({ ImageWidth: Width, ImageHeight: Height });
-        },(errorMsg) =>
-        {
-            console.log( errorMsg );
-        }); */}
+  
             <ImageBackground
               source={{
                 uri:
-                  img,
+                  uri,
               }}
+              resizeMode="contain"
+              // transform= {0.4}
               style={{
                 flex: 1,
-                width: null,
-                height: 400,
-                aspectRatio: 0.9, 
-                resizeMode: 'contain',
-                // aspectRatio: 1.1
+                width: width,
+                height: 500,
               }}
             >
               <View style={{ flex: 1, alignItems: "center" }}>
@@ -193,7 +206,8 @@ const RandomImage = ({navigation}) => {
             }}
             onPress={() => { 
               console.log('Pressed')
-              openShareDialogAsync(viewShotRef)} }
+              openShareDialogAsync()
+              } }
         >
          <Ionicons name="md-share-alt" size={25} color="white" 
          />

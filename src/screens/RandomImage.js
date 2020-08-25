@@ -1,19 +1,20 @@
-import React, { useRef, useEffect, useState } from "react";
-import {
-  View,
+import React, { useRef, useEffect, useState } from 'react';
+import {  View,
   Text,
   StyleSheet,
   ImageBackground,
   TextInput,
   Dimensions,
   TouchableOpacity,
-} from "react-native";
+  Alert,
+  Image
+  } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 import { Entypo, Ionicons, FontAwesome } from "@expo/vector-icons";
 import ViewShot from "react-native-view-shot";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as Sharing from 'expo-sharing'
-
+import constants from "expo-constants";
 
 const saveImg = async (uri, setUri, viewShotRef, navigation) => {
   const img = await viewShotRef.current.capture();
@@ -73,23 +74,8 @@ const RandomImage = ({navigation}) => {
   return (
     <View style={{ flex: 1 }}>
         <ViewShot ref={viewShotRef}  options={{ format: "jpg", quality: 0.9 }} style={{ flex: 7}} >
-  
-            <ImageBackground
-              source={{
-                uri:
-                  img,
-              }}
-              resizeMode="contain"
-              style={{
-                flex: 1,
-                width: width,
-                height: null,
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <View style={{ flex: 1, alignItems: "center" }}>
-                <TextInput
+
+            <TextInput
                   placeholder='Enter Top Text'
                   placeholderTextColor='#000'
                   textAlign='center'
@@ -99,16 +85,34 @@ const RandomImage = ({navigation}) => {
                   onKeyPress = {() => {}}
                   returnKeyType = 'done'
                   style={{
+                    flex:1,
                     padding: 18,
-                    position: "absolute",
-                    top: 10,
-                    width: Dimensions.get("screen").width - 30,
+                    // position: "absolute",
+                    // top: 10,
+                    width,
+                    textAlign: "center",
                     alignItems: "center",
                     fontSize: 40,
-                    color: '#fff'
+                    color: '#000',
+                    backgroundColor: '#fff',
+                    marginBottom: 5
                   }}
                 />
-                <TextInput
+  
+            
+            <Image  
+              style={{
+                flex: 5,
+                  width: width,
+                  height: height -60 - constants.statusBarHeight,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  overflow:'hidden'
+              }}  source={{uri: img}}  resizeMode="contain" 
+              resizeMethod="resize"
+            />
+          
+            <TextInput
                   placeholder='Enter Bottom Text'
                   placeholderTextColor='#000'
                   textAlign='center'
@@ -116,18 +120,18 @@ const RandomImage = ({navigation}) => {
                   maxLength={25}
                   autoCaptialize = 'characters'
                   style={{
+                    flex:1,
                     padding: 18,
-                    position: "absolute",
-                    bottom: -27,
-                    width: Dimensions.get("screen").width - 30,
+                    // position: "absolute",
+                    // bottom: 10,
+                    width,
+                    textAlign: "center",
                     alignItems: "center",
                     fontSize: 40,
-                    color: '#fff'
-
+                    color: '#000',
+                    backgroundColor: '#fff'
                   }}
                 />
-              </View>
-            </ImageBackground>
             
         </ViewShot>
       <View style={{ flex: 1, flexDirection: "row", justifyContent: 'space-around' }}>
@@ -145,7 +149,7 @@ const RandomImage = ({navigation}) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => saveImg(uri, setUri, viewShotRef, navigation)}
+          onPress={() => saveImg(img, setImg, viewShotRef, navigation)}
         >
           <Entypo name='save' size={22} color="#fff" style={{ marginRight: 5 }} />
           <Text style={{color:"#fff"}}>Save Image</Text>

@@ -16,7 +16,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "bundleIdentifier": "com.yididya.meme_gen",
+      "bundleIdentifier": "com.yididya.memeGenerator",
       "buildNumber": "1.0.0"
     },
     "android": {

@@ -25,15 +25,33 @@ const Home = ({ navigation }) => {
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={{ alignItems: 'center', marginTop: 20 }}>
         <View style={{ marginBottom: 35 }}>
-          <Text style={{ fontSize: 60, color: '#39f70a' }}>MEME</Text>
-          <Text style={{ fontSize: 50, color: '#ffbc03' }}>GENERATOR</Text>
+          <Text
+            style={{
+              fontSize: 60,
+              color: '#39f70a',
+              fontFamily: 'sans-serif-light',
+            }}
+          >
+            MEME
+          </Text>
+          <Text
+            style={{
+              fontSize: 50,
+              color: '#ffbc03',
+              fontFamily: 'sans-serif-light',
+            }}
+          >
+            GENERATOR
+          </Text>
         </View>
         <Image
           source={{
-            uri: '../../assets/img.png',
+            uri:
+              'https://i.pinimg.com/564x/1f/ae/50/1fae509c2625b85c3011bba0b462b9c8.jpg',
           }}
+          resizeMode="contain"
           style={{
-            height: 200,
+            height: 250,
             width: 250,
             marginBottom: 40,
             backgroundColor: '#fff',

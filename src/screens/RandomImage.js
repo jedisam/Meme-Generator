@@ -47,8 +47,6 @@ const RandomImage = ({ navigation }) => {
       if (granted) {
         const granted = await MediaLibrary.getPermissionsAsync();
         await MediaLibrary.saveToLibraryAsync(img);
-        setTopText('');
-        setBottomText('');
         alert('saved to Gallery!');
         navigation.navigate('Home');
       } else {
@@ -68,8 +66,6 @@ const RandomImage = ({ navigation }) => {
     try {
       const manipResult = await ImageManipulator.manipulateAsync(img);
       await Sharing.shareAsync(manipResult.uri);
-      // setTopText('');
-      // setBottomText('');
     } catch (err) {
       alert(err);
       console.log('ERROR: ', err);
@@ -96,11 +92,11 @@ const RandomImage = ({ navigation }) => {
           style={{
             flex: 2.5,
             // padding: 18,
-            marginTop: 5,
+            // marginTop: 2,
             width,
             textAlign: 'center',
             alignItems: 'center',
-            fontSize: 33,
+            fontSize: 36,
             color: '#000',
             backgroundColor: '#fff',
           }}
@@ -113,7 +109,7 @@ const RandomImage = ({ navigation }) => {
             height: height - 60 - constants.statusBarHeight,
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: -20,
+            marginTop: -25,
           }}
           source={{ uri: img }}
           resizeMode="contain"
@@ -134,7 +130,7 @@ const RandomImage = ({ navigation }) => {
             width,
             textAlign: 'center',
             alignItems: 'center',
-            fontSize: 33,
+            fontSize: 36,
             color: '#000',
             backgroundColor: '#fff',
           }}

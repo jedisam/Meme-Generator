@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
   TextInput,
   Dimensions,
   TouchableOpacity,
@@ -18,44 +17,6 @@ import * as Sharing from 'expo-sharing';
 import constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 
-const saveImg = async (setTopText, setBottomText, viewShotRef, navigation) => {
-  try {
-    const img = await viewShotRef.current.capture();
-    const { granted } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    if (granted) {
-      const granted = await MediaLibrary.getPermissionsAsync();
-      console.log(granted);
-
-      await MediaLibrary.saveToLibraryAsync(img);
-      console.log('Saved!');
-      setTopText('');
-      setBottomText('');
-      alert('saved to Gallery!');
-      navigation.navigate('Home');
-    } else {
-      Alert.alert('Permission is required');
-    }
-  } catch (err) {
-    console.log(err);
-  }
-};
-const openShareDialogAsync = async (viewShotRef, setBottomText, setTopText) => {
-  const img = await viewShotRef.current.capture();
-  if (!(await Sharing.isAvailableAsync())) {
-    alert(`Uh oh, sharing isn't available on your platform`);
-    return;
-  }
-  try {
-    const manipResult = await ImageManipulator.manipulateAsync(img);
-    await Sharing.shareAsync(manipResult.uri);
-    setTopText('');
-    setBottomText('');
-  } catch (err) {
-    alert(err);
-    console.log('ERROR: ', err);
-  }
-};
-
 const RandomImage = ({ navigation }) => {
   const viewShotRef = useRef(null);
   const [img, setImg] = useState('https://i.imgflip.com/345v97.jpg');
@@ -65,7 +26,6 @@ const RandomImage = ({ navigation }) => {
 
   const changeImg = async setImg => {
     const randNum = Math.floor(Math.random() * allMemes.length);
-    console.log(allMemes.length);
     setImg(allMemes[randNum].url);
   };
 
@@ -80,6 +40,42 @@ const RandomImage = ({ navigation }) => {
       });
   });
 
+  const saveImg = async () => {
+    try {
+      const img = await viewShotRef.current.capture();
+      const { granted } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (granted) {
+        const granted = await MediaLibrary.getPermissionsAsync();
+        await MediaLibrary.saveToLibraryAsync(img);
+        setTopText('');
+        setBottomText('');
+        alert('saved to Gallery!');
+        navigation.navigate('Home');
+      } else {
+        Alert.alert('Permission is required');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const openShareDialogAsync = async () => {
+    const img = await viewShotRef.current.capture();
+    if (!(await Sharing.isAvailableAsync())) {
+      alert(`Uh oh, sharing isn't available on your platform`);
+      return;
+    }
+    try {
+      const manipResult = await ImageManipulator.manipulateAsync(img);
+      await Sharing.shareAsync(manipResult.uri);
+      // setTopText('');
+      // setBottomText('');
+    } catch (err) {
+      alert(err);
+      console.log('ERROR: ', err);
+    }
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <ViewShot
@@ -92,20 +88,19 @@ const RandomImage = ({ navigation }) => {
           placeholderTextColor="#000"
           textAlign="center"
           multiline={true}
-          maxLength={25}
+          maxLength={35}
           autoCapitalize="characters"
           onKeyPress={() => {}}
           returnKeyType="done"
           onChangeText={text => setTopText(text)}
           style={{
-            flex: 1,
-            padding: 18,
-            // position: "absolute",
-            // top: 10,
+            flex: 2.5,
+            // padding: 18,
+            marginTop: 5,
             width,
             textAlign: 'center',
             alignItems: 'center',
-            fontSize: 40,
+            fontSize: 33,
             color: '#000',
             backgroundColor: '#fff',
           }}
@@ -113,11 +108,12 @@ const RandomImage = ({ navigation }) => {
 
         <Image
           style={{
-            flex: 5,
+            flex: 4,
             width: width,
             height: height - 60 - constants.statusBarHeight,
             justifyContent: 'center',
             alignItems: 'center',
+            marginTop: -20,
           }}
           source={{ uri: img }}
           resizeMode="contain"
@@ -129,18 +125,16 @@ const RandomImage = ({ navigation }) => {
           placeholderTextColor="#000"
           textAlign="center"
           multiline={true}
-          maxLength={25}
+          maxLength={33}
           autoCaptialize="characters"
           onChangeText={text => setBottomText(text)}
           style={{
-            flex: 1,
-            padding: 18,
-            // position: "absolute",
-            // bottom: 10,
+            flex: 1.5,
+            // padding: 18,
             width,
             textAlign: 'center',
             alignItems: 'center',
-            fontSize: 40,
+            fontSize: 33,
             color: '#000',
             backgroundColor: '#fff',
           }}
@@ -161,12 +155,17 @@ const RandomImage = ({ navigation }) => {
           <FontAwesome name="rotate-right" size={24} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.save}
-          onPress={() =>
-            topText && bottomText
-              ? saveImg(img, setImg, viewShotRef, navigation)
-              : null
-          }
+          style={{
+            width: 130,
+            height: 50,
+            backgroundColor: topText && bottomText ? '#39f70a' : '#b6f285',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 13,
+            margin: 4,
+            flexDirection: 'row',
+          }}
+          onPress={() => (topText && bottomText ? saveImg() : null)}
         >
           <Entypo
             name="save"
@@ -178,11 +177,19 @@ const RandomImage = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.share}
+          style={{
+            flex: 1,
+            backgroundColor: topText && bottomText ? '#39f70a' : '#b6f285',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 13,
+            margin: 4,
+            width: 8,
+            height: 50,
+            padding: 0,
+          }}
           onPress={() => {
-            topText && bottomText
-              ? openShareDialogAsync(viewShotRef, setBottomText, setTopText)
-              : null;
+            topText && bottomText ? openShareDialogAsync() : null;
           }}
         >
           <Ionicons name="md-share-alt" size={25} color="white" />
@@ -200,27 +207,6 @@ const styles = StyleSheet.create({
     marginTop: 13,
     margin: 4,
     width: 5,
-    height: 50,
-    padding: 0,
-  },
-  save: {
-    width: 130,
-    height: 50,
-    backgroundColor: topText && bottomText ? '#39f70a' : '#b6f285',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 13,
-    margin: 4,
-    flexDirection: 'row',
-  },
-  share: {
-    flex: 1,
-    backgroundColor: topText && bottomText ? '#39f70a' : '#b6f285',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 13,
-    margin: 4,
-    width: 8,
     height: 50,
     padding: 0,
   },

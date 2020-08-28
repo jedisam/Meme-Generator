@@ -1,15 +1,7 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Modal,
-  Button,
-} from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
+import React from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 
 const Home = ({ navigation }) => {
   const pickFromGallery = async () => {
@@ -21,42 +13,49 @@ const Home = ({ navigation }) => {
         aspect: [2, 3],
         quality: 1,
       });
-        if (!data.cancelled) {
-          navigation.navigate('Edit', {data})
-        }
+      if (!data.cancelled) {
+        navigation.navigate('Edit', { data });
+      }
     } else {
-      Alert.alert("Permission is required to access Gallery");
+      Alert.alert('Permission is required to access Gallery');
     }
   };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
-      <View style={{ alignItems: "center", marginTop: 20 }}>
+      <View style={{ alignItems: 'center', marginTop: 20 }}>
         <View style={{ marginBottom: 35 }}>
-          <Text style={{ fontSize: 60, color: "#39f70a" }}>MEME</Text>
-          <Text style={{ fontSize: 50, color: "#39f70a" }}>GENERATOR</Text>
+          <Text style={{ fontSize: 60, color: '#39f70a' }}>MEME</Text>
+          <Text style={{ fontSize: 50, color: '#ffbc03' }}>GENERATOR</Text>
         </View>
         <Image
           source={{
-            uri:
-              "https://i.kym-cdn.com/entries/icons/mobile/000/000/091/TrollFace.jpg",
+            uri: '../../assets/img.png',
           }}
-          style={{ height: 200, width: 250, marginBottom: 40, backgroundColor: 'red' }}
+          style={{
+            height: 200,
+            width: 250,
+            marginBottom: 40,
+            backgroundColor: '#fff',
+          }}
         />
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-around",
+            flexDirection: 'row',
+            justifyContent: 'space-around',
           }}
         >
           <TouchableOpacity
             style={styles.btn}
             onPress={() => pickFromGallery()}
           >
-            <Text style={{ color: "#fff" }}>Upload Image</Text>
+            <Text style={{ color: '#fff' }}>Upload Image</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btn} onPress={() =>navigation.navigate('Random')} >
-            <Text style={{ color: "#fff" }}>Use Random Image</Text>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => navigation.navigate('Random')}
+          >
+            <Text style={{ color: '#fff' }}>Use Random Image</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -68,9 +67,9 @@ const styles = StyleSheet.create({
   btn: {
     width: 150,
     height: 50,
-    backgroundColor: "#39f70a",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#39f70a',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 23,
     margin: 14,
     padding: 10,

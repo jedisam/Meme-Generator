@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Meme_Generator",
-    "slug": "meme_generator",
+    "name": "Meme Generator",
+    "slug": "meme generator",
     "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",

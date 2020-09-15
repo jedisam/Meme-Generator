@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Meme Generator",
-    "slug": "meme generator",
+    "slug": "meme_generator",
     "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,7 +21,9 @@
     },
     "android": {
       "package": "com.yididya.meme_gen",
-      "versionCode": 1
-    }
+      "versionCode": 1,
+      "enableDangerousExperimentalLeanBuilds": true
+    },
+    "entryPoint": "node_modules/expo/AppEntry.js"
   }
 }
